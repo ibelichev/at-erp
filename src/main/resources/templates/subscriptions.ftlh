@@ -66,9 +66,15 @@
     <h3>Подписки</h3>
     <#list subscriptions as sub>
         <div>
-            <div><b>Имя ученика: </b>${sub.studentName}</div>
+            <div><b>Имя ученика: </b>
+              <#if sub.student?has_content>
+                ${sub.student.name}
+              <#else>
+                N/A
+              </#if>
+            </div>
             <div><b>Название подписки: </b>${sub.subscriptionName}</div>
-            <div><b>Id: </b>${sub.studentId}</div>
+            <div><b>Id: </b>${sub.student.id}</div>
         </div>
     </#list>
 </div>

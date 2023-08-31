@@ -4,6 +4,7 @@ package com.example.aterm.models;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import java.util.*;
 
 import javax.persistence.*;
 
@@ -16,12 +17,6 @@ public class Subscription {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-
-    @Column(name = "studentId")
-    private Long studentId;
-
-    @Column(name = "studentName")
-    private String studentName;
 
     @Column(name = "subscriptionName")
     private String subscriptionName;
@@ -37,4 +32,11 @@ public class Subscription {
 
     @Column(name = "money")
     private int money;
+
+    @ManyToOne
+    @JoinColumn(name = "student_id")
+    private Student student;
+
+    @OneToMany(mappedBy = "subscription", cascade = CascadeType.ALL)
+    private List<Lesson> lessons = new ArrayList<>();
 }

@@ -1,6 +1,7 @@
 package com.example.aterm.servieces;
 
 import com.example.aterm.models.Lesson;
+import com.example.aterm.models.Subscription;
 import com.example.aterm.repositories.LessonRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,14 +18,6 @@ public class LessonService {
     public List<Lesson> findAll() {
         return lessonRepository.findAll();
     }
-
-    public List<Lesson> findLessonsByStudentId(Long subscriptionId) {
-        return lessonRepository.findBySubscriptionId(subscriptionId);
-    }
-
-//    public Optional<Lesson> findLessonById(int id) {
-//        return lessonRepository.findById(id);
-//    }
 
     public Lesson findLessonById(int id) {
         return lessonRepository.findById(id).orElse(null);
@@ -59,6 +52,7 @@ public class LessonService {
     public void deleteLesson(int id) {
         lessonRepository.deleteById(id);
     }
+
 
     // создать двумерный массив с временем по интервалам, передавать в первый окно, во второй ключ свободен/занят. проверять через lessonRepository.FindByDateAndTime.orElse(null); if null: свободно
 
