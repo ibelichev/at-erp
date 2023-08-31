@@ -65,12 +65,20 @@
 <header>
     <h1>ATERM</h1>
 </header>
-<nav>
-    <a href="/students">Ученики</a>
-    <a href="/subscriptions">Подписки</a>
-    <a href="/lessons">Уроки</a>
-    <a href="/prepods">Преподаватели</a>
-</nav>
+
+<#if role == "[ROLE_ADMIN]">
+    <nav>
+        <a href="/students">Ученики</a>
+        <a href="/subscriptions">Подписки</a>
+        <a href="/lessons">Уроки</a>
+        <a href="/prepods">Преподаватели</a>
+    </nav>
+<#else>
+    <nav>
+        <a href="/client/lessons">Записаться на урок</a>
+    </nav>
+</#if>
+
 <form action="/logout" method="post">
     <input type="hidden" name="_csrf" value="${_csrf.token}">
     <input type="submit" value="Выйти">

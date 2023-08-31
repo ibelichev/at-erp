@@ -1,8 +1,8 @@
 package com.example.aterm.controllers;
 
-import com.example.aterm.models.Student;
 import com.example.aterm.models.Subscription;
 import com.example.aterm.models.User;
+import com.example.aterm.repositories.LessonRepository;
 import com.example.aterm.repositories.StudentRepository;
 import com.example.aterm.repositories.SubscriptionReposiory;
 import com.example.aterm.servieces.*;
@@ -21,27 +21,24 @@ import java.util.List;
 @PreAuthorize("hasAuthority('ROLE_CLIENT')")
 public class ClientController {
 
-    private final StudentService studentService;
-    private final SubscriptionService subscriptionService;
-
     private final LessonService lessonService;
     private final PrepodService prepodService;
     private final StudentRepository studentRepository;
     private final SubscriptionReposiory subscriptionReposiory;
     private final UserService userService;
+    private final LessonRepository lessonRepository;
 
     @GetMapping("/client/lessons")
     public String clientLessons(Principal principal, Model model, @RequestParam(name = "name", required = false) String prepodName) {
         User user = userService.getUserByPrincipal(principal);
         model.addAttribute("user", user);
         System.out.println("-------- user: " + user.toString());
-        long id = (studentRepository.findByName(user.getName())).get(0).getId();
+        Long id = (studentRepository.findByName(user.getName())).get(0).getId();
         List<Subscription> sub = subscriptionReposiory.findByStudentId(id);
         model.addAttribute("subscription", sub.get(0));
         model.addAttribute("student", studentRepository.getById(id));
         model.addAttribute("prepods", prepodService.listPrepod(prepodName));
-        model.addAttribute("lessons", lessonService.findLessonsByStudentId(id));
-
+        model.addAttribute("lessons", lessonRepository.findBySubscriptionId(sub.get(0).getId()));
         return "client_lessons";
     }
 }

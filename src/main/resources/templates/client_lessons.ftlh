@@ -129,11 +129,6 @@
     <div>Факт уроков: ${subscription.nowLesson}</div>
     <div>К оплате: ${subscription.toPay}</div>
     <div>Оплачено: ${subscription.money}</div>
-
-    <form action="/subscription/delete/${subscription.id}" method="post">
-        <input type="hidden" name="_csrf" value="${_csrf.token}">
-        <input type="submit" value="Удалить подписку">
-    </form>
 </div>
 
 <h3>Запланировать урок</h3>
@@ -176,6 +171,7 @@
                 <td>${lesson.date}</td>
                 <td>${lesson.time}</td>
                 <td>${lesson.prepod}</td>
+                <td>${lesson.status}</td>
 
             </tr>
         </#list>
