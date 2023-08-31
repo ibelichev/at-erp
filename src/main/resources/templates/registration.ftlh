@@ -10,7 +10,13 @@
     ФИО: <input type="text" name="name"><br><br>
     Эл. почта: <input type="email" name="email"><br><br>
     Пароль: <input type="password" name="password"><br><br>
-    <input type="hidden" name="_csrf" value="${_csrf.token}">
+    <select name="roles" required>
+        <option value="">Роль</option>
+
+            <option value="ROLE_CLIENT">Ученик</option>
+            <option value="ROLE_ADMIN">Админ</option>
+
+    </select>    <input type="hidden" name="_csrf" value="${_csrf.token}">
     <input type="submit" value="Зарегестрировать"/>
 </form>
 

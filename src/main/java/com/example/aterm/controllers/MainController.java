@@ -11,14 +11,17 @@ import com.example.aterm.servieces.PrepodService;
 import com.example.aterm.servieces.StudentService;
 import com.example.aterm.servieces.SubscriptionService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
+
 @Controller
 @RequiredArgsConstructor
+@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 public class MainController {
     private final StudentService studentService;
     private final SubscriptionService subscriptionService;
@@ -151,6 +154,5 @@ public class MainController {
         model.addAttribute("lessons", lessonService.findLessonsByStudentId(id));
         return "subscription";
     }
-
 }
 

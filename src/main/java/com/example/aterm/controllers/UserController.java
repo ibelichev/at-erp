@@ -32,9 +32,4 @@ public class UserController {
         userService.createUser(user);
         return "redirect:/login";
     }
-
-    @GetMapping("/hello")
-    public String securityUrl() {
-        return "hello";
-    }
 }
