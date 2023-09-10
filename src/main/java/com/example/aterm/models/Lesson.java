@@ -36,4 +36,5 @@ public class Lesson {
 
     @Column(name = "status")
     private String status = "Не проведен";
+
 }
