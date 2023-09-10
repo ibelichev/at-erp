@@ -15,6 +15,13 @@ import org.springframework.security.core.Authentication;
 public class LessonCreationController {
 
     private final LessonService lessonService;
+    @PostMapping("/lesson/create")
+    public String lessonsCreate(@ModelAttribute Lesson lesson, Authentication authentication) {
+        lessonService.saveLesson(lesson);
+        if (authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
+            // Если пользователь имеет роль ROLE_ADMIN, выполните редирект на страницу "subscription"
+            return "redirect:/subscription/" + lesson.getSubscriptionId(); // Передаем ID созданного урока
+
     private final SubscriptionReposiory subscriptionReposiory;
     @PostMapping("/lesson/create")
     public String lessonsCreate(@ModelAttribute Lesson lesson, Authentication authentication) {

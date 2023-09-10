@@ -1,6 +1,5 @@
 package com.example.aterm.controllers;
 
-import com.example.aterm.models.Student;
 import com.example.aterm.models.Subscription;
 import com.example.aterm.models.User;
 import com.example.aterm.repositories.LessonRepository;
@@ -35,6 +34,11 @@ public class ClientController {
         model.addAttribute("user", user);
         System.out.println("-------- user: " + user.toString());
         Long id = (studentRepository.findByName(user.getName())).get(0).getId();
+        List<Subscription> sub = subscriptionReposiory.findByStudentId(id);
+        model.addAttribute("subscription", sub.get(0));
+        model.addAttribute("student", studentRepository.getById(id));
+        model.addAttribute("prepods", prepodService.listPrepod(prepodName));
+        model.addAttribute("lessons", lessonRepository.findBySubscriptionId(sub.get(0).getId()));
         Student student = (studentRepository.findByName(user.getName()).get(0));
         List<Subscription> sub = subscriptionReposiory.findByStudent(student);
         model.addAttribute("subscription", sub.get(0));

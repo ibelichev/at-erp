@@ -19,6 +19,10 @@ public class LessonService {
         return lessonRepository.findAll();
     }
 
+    public List<Lesson> findLessonsBySubscriptionId(Long subscriptionId) {
+        return lessonRepository.findBySubscriptionId(subscriptionId);
+    }
+
     public Lesson findLessonById(int id) {
         return lessonRepository.findById(id).orElse(null);
     }

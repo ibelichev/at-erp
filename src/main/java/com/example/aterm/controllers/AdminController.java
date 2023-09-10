@@ -36,6 +36,7 @@ public class AdminController {
     private final StudentRepository studentRepository;
     private final SubscriptionReposiory subscriptionReposiory;
     private final LessonRepository lessonRepository;
+
     @GetMapping("/students")
     public String students(@RequestParam(name = "name", required = false) String name, Model model) {
         model.addAttribute("students", studentService.listStudents(name));
@@ -44,6 +45,17 @@ public class AdminController {
 
     @GetMapping("/student/{id}")
     public String studentInfo(@PathVariable Long id, Model model, @RequestParam(name = "subscriptionName", required = false) String name, @RequestParam(name = "name", required = false) String prepodName) {
+        model.addAttribute("student", studentService.getStudentById(id));
+        int idd = new Random().nextInt();
+        model.addAttribute("idd", Integer.toString(idd));
+        if (subscriptionService.getSubscriptionByUserId(id) != null) {
+            try {
+                List<Lesson> lessons = lessonService.findLessonsBySubscriptionId(id);
+                List<Prepod>  prepods = prepodService.listPrepod(prepodName);
+                model.addAttribute("subscriptions", subscriptionService.getSubscriptionByUserId(id));
+                model.addAttribute("lessons", lessons);
+                model.addAttribute("prepods", prepods);
+                System.out.println(subscriptionService.getSubscriptionByUserId(id).toString());
         Student student = studentRepository.getById(id);
         model.addAttribute("student", student);
         List<Subscription> subscriptions = student.getSubscriptions();
@@ -67,6 +79,9 @@ public class AdminController {
         }
 
         return "student-info";
+
+    }
+
     }
 
 
@@ -105,6 +120,8 @@ public class AdminController {
     }
 
     @PostMapping("/subscriptions/add")
+    public String subscriptionCreate(@ModelAttribute Subscription subscription) {
+
     public String subscriptionCreate(@ModelAttribute Subscription subscription, @RequestParam Long studentId) {
         Student student = studentService.getStudentById(studentId);
         subscription.setStudent(student);
@@ -151,6 +168,9 @@ public class AdminController {
     public String subscription(@PathVariable Long id, Model model, @RequestParam(name = "subscriptionName", required = false) String name, @RequestParam(name = "name", required = false) String prepodName){
         Subscription sub = subscriptionReposiory.getById(id);
         model.addAttribute("subscription", sub);
+        model.addAttribute("student", studentRepository.getById(sub.getStudentId()));
+        model.addAttribute("prepods", prepodService.listPrepod(prepodName));
+        model.addAttribute("lessons", lessonService.findLessonsBySubscriptionId(id));
         model.addAttribute("student", sub.getStudent());
         model.addAttribute("prepods", prepodService.listPrepod(prepodName));
         model.addAttribute("lessons", lessonRepository.findLessonsBySubscriptionId(id));
