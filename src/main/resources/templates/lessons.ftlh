@@ -131,7 +131,7 @@
                         <td>${lesson.numbOfLesson}</td>
                         <td>${lesson.date}</td>
                         <td>${lesson.time}</td>
-                        <td>${lesson.studentName}</td>
+                        <td>${lesson.subscription.student.name}</td>
                     </tr>
                 </#list>
                 </tbody>

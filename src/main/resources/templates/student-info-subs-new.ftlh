@@ -143,10 +143,9 @@
 
     <div class="student-info">
         <form action="/subscriptions/add" method="post">
-            <input type="hidden" name="id" value="${idd}">
+
             <input type="text" name="subscriptionName" placeholder="Название подписки">
             <input type="text" name="studentName" placeholder="ФИО ученика" value="${student.name}">
-            <input type="hidden" name="studentId" value="${student.id}">
             <input type="text" name="amountOfLessons" placeholder="План уроков">
             <input type="hidden" name="nowLesson" value="0">
             <input type="text" name="toPay" placeholder="К оплате">

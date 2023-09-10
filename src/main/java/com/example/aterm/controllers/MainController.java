@@ -34,7 +34,6 @@ public class MainController {
 
     @GetMapping("/")
     public String main(Model model) {
-        // Теперь вы можете использовать объект currentUser в этом методе и других методах класса
         String role = currentUser.getRoles().toString();
         System.out.println(role);
         model.addAttribute("currentUser", currentUser);

@@ -1,6 +1,7 @@
 package com.example.aterm.controllers;
 
 import com.example.aterm.models.*;
+import com.example.aterm.repositories.SubscriptionReposiory;
 import com.example.aterm.servieces.LessonService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -20,6 +21,15 @@ public class LessonCreationController {
         if (authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
             // Если пользователь имеет роль ROLE_ADMIN, выполните редирект на страницу "subscription"
             return "redirect:/subscription/" + lesson.getSubscriptionId(); // Передаем ID созданного урока
+
+    private final SubscriptionReposiory subscriptionReposiory;
+    @PostMapping("/lesson/create")
+    public String lessonsCreate(@ModelAttribute Lesson lesson, Authentication authentication) {
+//        lesson.setSubscription(subscriptionReposiory.getById(id));
+        lessonService.saveLesson(lesson);
+        if (authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
+            // Если пользователь имеет роль ROLE_ADMIN, выполните редирект на страницу "subscription"
+            return "redirect:/subscription/" + lesson.getSubscription().getId(); // Передаем ID созданного урока
         } else {
             // В противном случае, выполните редирект на страницу "/client/lessons"
             return "redirect:/client/lessons";

@@ -4,6 +4,7 @@ import com.example.aterm.models.Lesson;
 import com.example.aterm.models.Prepod;
 import com.example.aterm.models.Student;
 import com.example.aterm.models.Subscription;
+import com.example.aterm.repositories.LessonRepository;
 import com.example.aterm.repositories.StudentRepository;
 import com.example.aterm.repositories.SubscriptionReposiory;
 import com.example.aterm.servieces.LessonService;
@@ -17,6 +18,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -33,6 +35,8 @@ public class AdminController {
     private final PrepodService prepodService;
     private final StudentRepository studentRepository;
     private final SubscriptionReposiory subscriptionReposiory;
+    private final LessonRepository lessonRepository;
+
     @GetMapping("/students")
     public String students(@RequestParam(name = "name", required = false) String name, Model model) {
         model.addAttribute("students", studentService.listStudents(name));
@@ -52,6 +56,22 @@ public class AdminController {
                 model.addAttribute("lessons", lessons);
                 model.addAttribute("prepods", prepods);
                 System.out.println(subscriptionService.getSubscriptionByUserId(id).toString());
+        Student student = studentRepository.getById(id);
+        model.addAttribute("student", student);
+        List<Subscription> subscriptions = student.getSubscriptions();
+        if (!subscriptions.isEmpty()) {
+            try {
+                List<Lesson> lessons = new ArrayList<>();
+                for (Subscription subscription : subscriptions) {
+                    lessons.addAll(lessonRepository.findBySubscription(subscription));
+                }
+
+                List<Prepod> prepods = prepodService.listPrepod(prepodName);
+
+                model.addAttribute("subscriptions", subscriptions);
+                model.addAttribute("lessons", lessons);
+                model.addAttribute("prepods", prepods);
+//                System.out.println(subscriptions.toString());
             } catch (Exception e) {
                 System.out.println("ошибка в controller");
             }
@@ -61,6 +81,10 @@ public class AdminController {
         return "student-info";
 
     }
+
+    }
+
+
 
     @GetMapping("/subscriptions")
     public String subscriptions(@RequestParam(name = "subscriptionName", required = false) String name, Model model) {
@@ -97,6 +121,10 @@ public class AdminController {
 
     @PostMapping("/subscriptions/add")
     public String subscriptionCreate(@ModelAttribute Subscription subscription) {
+
+    public String subscriptionCreate(@ModelAttribute Subscription subscription, @RequestParam Long studentId) {
+        Student student = studentService.getStudentById(studentId);
+        subscription.setStudent(student);
         subscriptionService.saveSubscription(subscription);
         return "redirect:/students";
     }
@@ -143,6 +171,9 @@ public class AdminController {
         model.addAttribute("student", studentRepository.getById(sub.getStudentId()));
         model.addAttribute("prepods", prepodService.listPrepod(prepodName));
         model.addAttribute("lessons", lessonService.findLessonsBySubscriptionId(id));
+        model.addAttribute("student", sub.getStudent());
+        model.addAttribute("prepods", prepodService.listPrepod(prepodName));
+        model.addAttribute("lessons", lessonRepository.findLessonsBySubscriptionId(id));
         return "subscription";
     }
 }

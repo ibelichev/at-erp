@@ -18,11 +18,9 @@ public class Lesson {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    @Column(name = "subscriptionId")
-    private Long subscriptionId;
-
-    @Column(name = "studentName")
-    private String studentName;
+    @ManyToOne
+    @JoinColumn(name = "subscription_id")
+    private Subscription subscription;
 
     @Column(name="numbOfLesson")
     private int numbOfLesson;
@@ -35,8 +33,6 @@ public class Lesson {
 
     @Column(name="prepod")
     private String prepod;
-
-//    добавить дефолт для статуса либо проверку по времени в ссервис
 
     @Column(name = "status")
     private String status = "Не проведен";

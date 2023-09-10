@@ -134,7 +134,7 @@
 <h3>Запланировать урок</h3>
 
 <form action="/lesson/create" method="post">
-    <input type="hidden" name="subscriptionId" value="${subscription.id}">
+    <input type="hidden" name="subscription" value="${subscription.id}">
     <input type="hidden" name="studentName" value="${student.name}">
     <input type="number" name="numbOfLesson" placeholder="Номер занятия" required>
     <input type="date" name="date" placeholder="Дата" required>

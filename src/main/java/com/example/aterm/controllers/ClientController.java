@@ -39,6 +39,12 @@ public class ClientController {
         model.addAttribute("student", studentRepository.getById(id));
         model.addAttribute("prepods", prepodService.listPrepod(prepodName));
         model.addAttribute("lessons", lessonRepository.findBySubscriptionId(sub.get(0).getId()));
+        Student student = (studentRepository.findByName(user.getName()).get(0));
+        List<Subscription> sub = subscriptionReposiory.findByStudent(student);
+        model.addAttribute("subscription", sub.get(0));
+        model.addAttribute("student", studentRepository.getById(id));
+        model.addAttribute("prepods", prepodService.listPrepod(prepodName));
+        model.addAttribute("lessons", lessonRepository.findBySubscription(sub.get(0)));
         return "client_lessons";
     }
 }
