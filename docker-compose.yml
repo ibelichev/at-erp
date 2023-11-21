@@ -1,0 +1,11 @@
+version: '3'
+services:
+  postgres:
+    image: postgres:latest
+    container_name: at-erp
+    environment:
+      POSTGRES_DB: at-erp
+      POSTGRES_USER: at-admin
+      POSTGRES_PASSWORD: admin-password
+    ports:
+      - "5432:5432"
