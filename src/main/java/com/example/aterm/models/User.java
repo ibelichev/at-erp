@@ -11,7 +11,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name="users")
+@Table(name="users", schema = "entities")
 @Data
 public class User implements UserDetails {
     @Id
@@ -29,7 +29,7 @@ public class User implements UserDetails {
     private String password;
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
-    @CollectionTable(name = "user_role",
+    @CollectionTable(name = "user_role", schema = "entities",
     joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
     private Set<Role> roles = new HashSet<>();

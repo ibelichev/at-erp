@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="1" author="ib">
+        <insert tableName="students" schemaName="entities">
+            <column name="id" value="1"/>
+            <column name="name" value="Дан Рейнолдс"/>
+            <column name="phone" value="123-456-7890"/>
+            <column name="birthday" value="1990-01-01"/>
+        </insert>
+
+        <insert tableName="students" schemaName="entities">
+            <column name="id" value="2"/>
+            <column name="name" value="Райан Гослинг"/>
+            <column name="phone" value="987-654-3210"/>
+            <column name="birthday" value="1985-05-15"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="2" author="ib">
+        <insert tableName="subscriptions" schemaName="entities">
+            <column name="id" value="1"/>
+            <column name="subscription_name" value="Вокал. Первая ступень"/>
+            <column name="amount_of_lessons" value="24"/>
+            <column name="now_lesson" value="0"/>
+            <column name="to_pay" value="59400"/>
+            <column name="money" value="59400"/>
+            <column name="student_id" value="1"/>
+        </insert>
+
+        <insert tableName="subscriptions" schemaName="entities">
+            <column name="id" value="2"/>
+            <column name="subscription_name" value="Вокал. Первая ступень"/>
+            <column name="amount_of_lessons" value="24"/>
+            <column name="now_lesson" value="0"/>
+            <column name="to_pay" value="59400"/>
+            <column name="money" value="59400"/>
+            <column name="student_id" value="2"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="3" author="ib">
+        <insert tableName="prepods" schemaName="entities">
+            <column name="id" value="1"/>
+            <column name="name" value="Преподаватель 1"/>
+        </insert>
+
+        <insert tableName="prepods" schemaName="entities">
+            <column name="id" value="2"/>
+            <column name="name" value="Преподаватель 2"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="4" author="ib">
+        <insert tableName="lessons" schemaName="entities">
+            <column name="id" value="1"/>
+            <column name="subscription_id" value="1"/>
+            <column name="numb_of_lesson" value="1"/>
+            <column name="date" value="01.11.2023"/>
+            <column name="time" value="13:20"/>
+            <column name="prepod" value="Преподаватель 1"/>
+            <column name="status" value="Проведен"/>
+        </insert>
+
+        <insert tableName="lessons" schemaName="entities">
+            <column name="id" value="2"/>
+            <column name="subscription_id" value="1"/>
+            <column name="numb_of_lesson" value="2"/>
+            <column name="date" value="02.11.2023"/>
+            <column name="time" value="14:20"/>
+            <column name="prepod" value="Преподаватель 1"/>
+            <column name="status" value="Сгорел"/>
+        </insert>
+
+        <insert tableName="lessons" schemaName="entities">
+            <column name="id" value="3"/>
+            <column name="subscription_id" value="1"/>
+            <column name="numb_of_lesson" value="3"/>
+            <column name="date" value="05.11.2023"/>
+            <column name="time" value="11:00"/>
+            <column name="prepod" value="Преподаватель 2"/>
+            <column name="status" value="Проведен"/>
+        </insert>
+
+        <insert tableName="lessons" schemaName="entities">
+            <column name="id" value="4"/>
+            <column name="subscription_id" value="2"/>
+            <column name="numb_of_lesson" value="1"/>
+            <column name="date" value="01.11.2023"/>
+            <column name="time" value="12:20"/>
+            <column name="prepod" value="Преподаватель 1"/>
+            <column name="status" value="Проведен"/>
+        </insert>
+
+        <insert tableName="lessons" schemaName="entities">
+            <column name="id" value="5"/>
+            <column name="subscription_id" value="2"/>
+            <column name="numb_of_lesson" value="2"/>
+            <column name="date" value="02.11.2023"/>
+            <column name="time" value="11:20"/>
+            <column name="prepod" value="Преподаватель 1"/>
+            <column name="status" value="Сгорел"/>
+        </insert>
+
+        <insert tableName="lessons" schemaName="entities">
+            <column name="id" value="6"/>
+            <column name="subscription_id" value="2"/>
+            <column name="numb_of_lesson" value="3"/>
+            <column name="date" value="05.11.2023"/>
+            <column name="time" value="11:00"/>
+            <column name="prepod" value="Преподаватель 2"/>
+            <column name="status" value="Проведен"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="5" author="ib">
+        <insert tableName="users" schemaName="entities">
+            <column name="id" value="1"/>
+            <column name="name" value="at-admin"/>
+            <column name="email" value="at-admin@at-erp.com"/>
+            <column name="password" value="$2a$08$B2T5/miKhn2wRrv6o1IiQOjhNTSi5Q2ky/G7MOZDX6wVyjjDKO4KC"/>
+        </insert>
+
+        <insert tableName="user_role" schemaName="entities">
+            <column name="user_id" value="1"/>
+            <column name="roles" value="ROLE_ADMIN"/>
+        </insert>
+
+        <insert tableName="users" schemaName="entities">
+            <column name="id" value="2"/>
+            <column name="name" value="Райан Гослинг"/>
+            <column name="email" value="student@at-erp.com"/>
+            <column name="password" value="$2a$08$B2T5/miKhn2wRrv6o1IiQOjhNTSi5Q2ky/G7MOZDX6wVyjjDKO4KC"/>
+        </insert>
+
+        <insert tableName="user_role" schemaName="entities">
+            <column name="user_id" value="2"/>
+            <column name="roles" value="ROLE_CLIENT"/>
+        </insert>
+    </changeSet>
+
+
+
+</databaseChangeLog>

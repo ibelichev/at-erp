@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+
+    <changeSet id="0" author="ib">
+        <sql>
+            CREATE SCHEMA IF NOT EXISTS entities;
+        </sql>
+    </changeSet>
+
+    <changeSet id="create-hibernate-sequence" author="your_name">
+        <createSequence sequenceName="hibernate_sequence" schemaName="entities" incrementBy="1" startValue="1" />
+    </changeSet>
+
+    <changeSet id="create-students-table" author="ib">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="students"/>
+            </not>
+        </preConditions>
+        <createTable tableName="students" schemaName="entities">
+            <column name="id" type="SERIAL">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="phone" type="VARCHAR(20)"/>
+            <column name="birthday" type="VARCHAR(10)"/>
+        </createTable>
+<!--        <createSequence sequenceName="students_id_seq" incrementBy="1" startValue="1" />-->
+<!--        <addDefaultValue tableName="students" columnName="id" defaultValueComputed="nextval('students_id_seq'::regclass)" />-->
+    </changeSet>
+
+    <changeSet id="create-subscriptions-table" author="your_name">
+        <createTable tableName="subscriptions" schemaName="entities">
+            <column name="id" type="SERIAL">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="subscription_name" type="VARCHAR(255)"/>
+            <column name="amount_of_lessons" type="INT"/>
+            <column name="now_lesson" type="INT"/>
+            <column name="to_pay" type="INT"/>
+            <column name="money" type="INT"/>
+            <column name="student_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="subscriptions" baseTableSchemaName="entities" baseColumnNames="student_id"
+                                 constraintName="fk_student_subscription"
+                                 referencedTableName="students" referencedTableSchemaName="entities" referencedColumnNames="id"/>
+<!--        <createSequence sequenceName="subscriptions_id_seq" incrementBy="1" startValue="1" />-->
+<!--        <addDefaultValue tableName="subscriptions" columnName="id" defaultValueComputed="nextval('subscriptions_id_seq'::regclass)" />-->
+    </changeSet>
+
+    <changeSet id="create-prepods-table" author="your_name">
+        <createTable tableName="prepods" schemaName="entities">
+            <column name="id" type="SERIAL">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+        </createTable>
+<!--        <createSequence sequenceName="prepods_id_seq" incrementBy="1" startValue="1" />-->
+<!--        <addDefaultValue tableName="prepods" columnName="id" defaultValueComputed="nextval('prepods_id_seq'::regclass)" />-->
+    </changeSet>
+
+    <changeSet id="create-lessons-table" author="your_name">
+        <createTable tableName="lessons" schemaName="entities">
+            <column name="id" type="SERIAL">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="subscription_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="numb_of_lesson" type="INT"/>
+            <column name="date" type="VARCHAR(10)"/>
+            <column name="time" type="VARCHAR(8)"/>
+            <column name="prepod" type="VARCHAR(255)"/>
+            <column name="status" type="VARCHAR(20)" defaultValue="Не проведен"/>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="lessons" baseTableSchemaName="entities" baseColumnNames="subscription_id"
+                                 constraintName="fk_lessons_subscription"
+                                 referencedTableName="subscriptions" referencedTableSchemaName="entities" referencedColumnNames="id"/>
+<!--        <createSequence sequenceName="lessons_id_seq" incrementBy="1" startValue="1" />-->
+<!--        <addDefaultValue tableName="lessons" columnName="id" defaultValueComputed="nextval('lessons_id_seq'::regclass)" />-->
+    </changeSet>
+
+
+    <changeSet id="create-users-table" author="your_name">
+        <createTable tableName="users" schemaName="entities">
+            <column name="id" type="SERIAL">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="email" type="VARCHAR(255)">
+                <constraints unique="true"/>
+            </column>
+            <column name="password" type="VARCHAR(1000)"/>
+        </createTable>
+<!--        <createSequence sequenceName="users_id_seq" incrementBy="1" startValue="1" />-->
+<!--        &lt;!&ndash; Настройка автогенерации id с использованием сиквенса &ndash;&gt;-->
+<!--        <addDefaultValue tableName="users" columnName="id" defaultValueComputed="nextval('users_id_seq'::regclass)" />-->
+    </changeSet>
+
+    <changeSet id="create-user-role-table" author="your_name">
+        <createTable tableName="user_role" schemaName="entities">
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="roles" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="user_role" baseTableSchemaName="entities" baseColumnNames="user_id"
+                                 constraintName="fk_user_role_user"
+                                 referencedTableName="users" referencedTableSchemaName="entities" referencedColumnNames="id"/>
+    </changeSet>
+</databaseChangeLog>

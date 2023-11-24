@@ -9,13 +9,13 @@ import org.hibernate.annotations.Subselect;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "lessons")
+@Table(name = "lessons", schema = "entities")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class Lesson {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @ManyToOne

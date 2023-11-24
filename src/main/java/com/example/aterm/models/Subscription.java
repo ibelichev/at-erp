@@ -9,13 +9,13 @@ import java.util.*;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "subscriptions")
+@Table(name = "subscriptions", schema = "entities")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class Subscription {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @Column(name = "subscriptionName")

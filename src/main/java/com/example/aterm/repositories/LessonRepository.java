@@ -11,4 +11,6 @@ public interface LessonRepository extends JpaRepository<Lesson, Integer> {
 
     List<Lesson> findLessonsBySubscriptionId(Long subscriptionId);
 
+    List<Lesson> findLessonsByPrepod(String prepod);
+
 }
