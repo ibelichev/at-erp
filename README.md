@@ -9,6 +9,7 @@ Erp система для школ, в которой можно вести уч
 4. `docker-compose -p at-erp up -d`
 5. `cd target`
 6. `java -jar at-erp-0.0.1-SNAPSHOT.jar`
+7. Перейти по адресу http://localhost:9090/
 
 
 ### Альтернативный вариант:
