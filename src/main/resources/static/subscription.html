@@ -128,25 +128,25 @@
     <a href="/prepods">Преподаватели</a>
 </nav>
 <div class="container">
-<h5 style="margin-left: 103px">Подписки: ${subscription.subscriptionName}</h5>
+    <h5 style="margin-left: 103px">Подписки: ${subscription.subscriptionName}</h5>
 
-<div class="student-info">
-    <div>План уроков: ${subscription.amountOfLessons}</div>
-    <div>Факт уроков: ${subscription.nowLesson}</div>
-    <div>К оплате: ${subscription.toPay}</div>
-    <div>Оплачено: ${subscription.money}</div>
+    <div class="student-info">
+        <div>План уроков: ${subscription.amountOfLessons}</div>
+        <div>Факт уроков: ${subscription.nowLesson}</div>
+        <div>К оплате: ${subscription.toPay}</div>
+        <div>Оплачено: ${subscription.money}</div>
 
-    <form action="/subscription/delete/${subscription.id}" method="post">
-        <input type="hidden" name="_csrf" value="${_csrf.token}">
-        <input type="submit" value="Удалить подписку">
-    </form>
-</div>
+        <form action="/subscription/delete/${subscription.id}" method="post">
+            <input type="hidden" name="_csrf" value="${_csrf.token}">
+            <input type="submit" value="Удалить подписку">
+        </form>
+    </div>
 
-<h3>Запланировать урок</h3>
+    <h3>Запланировать урок</h3>
 
-<form action="/lesson/create" method="post">
-    <input type="hidden" name="subscription" value="${subscription.id}">
-    <#if student?exists>
+    <form action="/lesson/create" method="post">
+        <input type="hidden" name="subscription" value="${subscription.id}">
+        <#if student?exists>
         <div><b>Имя ученика: </b>${student.name}</div>
     </#if>
 
@@ -156,16 +156,15 @@
     <select name="prepod" required>
         <option value="">Выберите преподавателя</option>
         <#list prepods as prepod>
-            <option value="${prepod.name}">${prepod.name}</option>
-        </#list>
+        <option value="${prepod.name}">${prepod.name}</option>
+    </#list>
     </select>
     <input type="hidden" name="_csrf" value="${_csrf.token}">
     <input type="submit" value="Назначить">
-</form>
+    </form>
 
-<h3>Список уроков</h3>
-
-<#if lessons?has_content>
+    <h3>Список уроков</h3>
+    <#if lessons?has_content>
     <table>
         <thead>
         <tr>
@@ -180,40 +179,40 @@
         </thead>
         <tbody>
         <#list lessons as lesson>
-            <tr>
-                <td>${lesson.numbOfLesson}</td>
-                <td>${lesson.date}</td>
-                <td>${lesson.time}</td>
-                <td>${lesson.prepod}</td>
-                <td>${lesson.status}</td>
+        <tr>
+            <td>${lesson.numbOfLesson}</td>
+            <td>${lesson.date}</td>
+            <td>${lesson.time}</td>
+            <td>${lesson.prepod}</td>
+            <td>${lesson.status}</td>
 
-                <#if lesson.status != "Проведен">
-                    <td>
-                        <form action="/lesson/${lesson.id}/delete" method="post" style="display: inline;">
-                            <input type="hidden" name="_csrf" value="${_csrf.token}">
-                            <input type="submit" value="Удалить">
-                        </form>
+            <#if lesson.status != "Проведен">
+            <td>
+                <form action="/lesson/${lesson.id}/delete" method="post" style="display: inline;">
+                    <input type="hidden" name="_csrf" value="${_csrf.token}">
+                    <input type="submit" value="Удалить">
+                </form>
 
-                        <#--                        /lesson/{id}/update/{status}-->
+                <#--                        /lesson/{id}/update/{status}-->
 
-                        <form action="/lesson/${lesson.id}/update/${subscription.id}/${"Проведен"}" method="post" style="display: inline;">
-                            <input type="hidden" name="_csrf" value="${_csrf.token}">
-                            <input type="submit" value="Проведен">
-                        </form>
+                <form action="/lesson/${lesson.id}/update/${subscription.id}/${"Проведен"}" method="post" style="display: inline;">
+                <input type="hidden" name="_csrf" value="${_csrf.token}">
+                <input type="submit" value="Проведен">
+                </form>
 
-                        <form action="/lesson/${lesson.id}/update/${subscription.id}/${"Сгорело"}" method="post" style="display: inline;">
-                            <input type="hidden" name="_csrf" value="${_csrf.token}">
-                            <input type="submit" value="Сгорело">
-                        </form>
-                    </td>
-                </#if>
+                <form action="/lesson/${lesson.id}/update/${subscription.id}/${"Сгорело"}" method="post" style="display: inline;">
+                <input type="hidden" name="_csrf" value="${_csrf.token}">
+                <input type="submit" value="Сгорело">
+                </form>
+            </td>
+        </#if>
 
 
-            </tr>
+        </tr>
         </#list>
         </tbody>
     </table>
-<#else>
+    <#else>
     <p>Ни один урок не назначен</p>
 </#if>
 
@@ -223,41 +222,43 @@
 
 </div>
 
-<script th:inline="javascript">
-    /*<![CDATA[*/
-    var lessonFramesData = /*[[${lessonFramesJSON}]]*/ [];
-    /*]]>*/
-</script>
+
+
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.10.0/fullcalendar.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.js"></script>
 
+<!-- Добавляем скрипт для инициализации календаря -->
 <script>
-$(document).ready(function() {
-    var eventsData = lessonFramesData.map(function(lessonFrame) {
-        return {
-            title: lessonFrame.prepod,
-            start: lessonFrame.date + 'T' + lessonFrame.prepod,
-            end: lessonFrame.date + 'T' + lessonFrame.prepod,
-            color: lessonFrame.isAvailable ? 'green' : 'red'
-        };
+    $(document).ready(function() {
+        $('#lessonCalendar').fullCalendar({
+            header: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'month,agendaWeek,agendaDay'
+            },
+            defaultView: 'month',
+            events: [
+                // Здесь нужно вставить код для передачи данных о занятых и свободных уроках
+                // в формате, понимаемом fullCalendar
+                // Пример:
+                {
+                    title: 'Свободно',
+                    start: '2023-09-19T21:02:00',
+                    end: '2023-09-19T22:02:00',
+                    color: 'green'
+                },
+                {
+                    title: 'Занято',
+                    start: '2023-09-19T14:00:00',
+                    end: '2023-09-19T15:00:00',
+                    color: 'red'
+                },
+            ]
+        });
     });
-
-    $('#lessonCalendar').fullCalendar({
-        header: {
-            left: 'prev,next today',
-            center: 'title',
-            right: 'month,agendaWeek,agendaDay'
-        },
-        defaultView: 'month',
-        events: eventsData,
-        eventRender: function(event, element) {
-            element.css('background-color', event.color);
-        }
-    });
-});
 </script>
-
 </body>
 </html>
