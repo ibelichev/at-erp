@@ -14,7 +14,7 @@
 
         <insert tableName="students" schemaName="entities">
             <column name="id" value="2"/>
-            <column name="name" value="Райан Гослинг"/>
+            <column name="name" value="student"/>
             <column name="phone" value="987-654-3210"/>
             <column name="birthday" value="1985-05-15"/>
         </insert>
@@ -72,7 +72,7 @@
             <column name="date" value="02.11.2023"/>
             <column name="time" value="14:20"/>
             <column name="prepod" value="Преподаватель 1"/>
-            <column name="status" value="Сгорел"/>
+            <column name="status" value="Сгорело"/>
         </insert>
 
         <insert tableName="lessons" schemaName="entities">
@@ -102,7 +102,7 @@
             <column name="date" value="02.11.2023"/>
             <column name="time" value="11:20"/>
             <column name="prepod" value="Преподаватель 1"/>
-            <column name="status" value="Сгорел"/>
+            <column name="status" value="Сгорело"/>
         </insert>
 
         <insert tableName="lessons" schemaName="entities">
@@ -131,7 +131,7 @@
 
         <insert tableName="users" schemaName="entities">
             <column name="id" value="2"/>
-            <column name="name" value="Райан Гослинг"/>
+            <column name="name" value="student"/>
             <column name="email" value="student@at-erp.com"/>
             <column name="password" value="$2a$08$B2T5/miKhn2wRrv6o1IiQOjhNTSi5Q2ky/G7MOZDX6wVyjjDKO4KC"/>
         </insert>

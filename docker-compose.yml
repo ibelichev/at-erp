@@ -7,5 +7,26 @@ services:
       POSTGRES_DB: at-erp
       POSTGRES_USER: at-admin
       POSTGRES_PASSWORD: admin-password
+      POSTGRES_INITDB_ARGS: "--username=at-admin"
+      POSTGRES_HOST_AUTH_METHOD: "password"
     ports:
       - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - mynetwork
+
+  db_init:
+    image: postgres:latest
+    command: ["bash", "-c", "sleep 5 && psql -U at-admin -d at-erp -c \"CREATE USER someuser WITH PASSWORD 'somepassword'; GRANT CONNECT ON DATABASE at-erp TO someuser; GRANT USAGE ON SCHEMA public TO someuser;\""]
+    depends_on:
+      - postgres
+    networks:
+      - mynetwork
+
+volumes:
+  postgres_data:
+
+networks:
+  mynetwork:
+    driver: bridge
