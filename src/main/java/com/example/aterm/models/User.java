@@ -28,6 +28,9 @@ public class User implements UserDetails {
     @Column(name = "password", length = 1000)
     private String password;
 
+    @Column(name = "active")
+    private boolean active;
+
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role", schema = "entities",
     joinColumns = @JoinColumn(name = "user_id"))
@@ -61,7 +64,7 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return active;
     }
 
 
