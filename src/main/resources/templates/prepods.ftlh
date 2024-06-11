@@ -118,7 +118,7 @@
                 <td>${prepod.name}</td>
                 <td>
                     <form action="/prepod/${prepod.id}/delete" method="post" style="display: inline;">
-                        <input type="hidden" name="_csrf" value="${_csrf.token}">
+                            <input type="hidden" name="_csrf" value="${_csrf.token}">
                         <input type="submit" value="Удалить">
                     </form>
                 </td>
@@ -130,9 +130,9 @@
     <h2>Добавить преподавателя</h2>
 
     <form action="/prepod/create" method="post">
+            <input type="hidden" name="_csrf" value="${_csrf.token}">
         <label for="name">Имя:</label>
         <input type="text" id="name" name="name">
-        <input type="hidden" name="_csrf" value="${_csrf.token}">
         <input type="submit" value="Добавить">
     </form>
 </div>
