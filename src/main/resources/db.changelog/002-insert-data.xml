@@ -122,6 +122,7 @@
             <column name="name" value="at-admin"/>
             <column name="email" value="at-admin@at-erp.com"/>
             <column name="password" value="$2a$08$B2T5/miKhn2wRrv6o1IiQOjhNTSi5Q2ky/G7MOZDX6wVyjjDKO4KC"/>
+            <column name="active" value="TRUE"/>
         </insert>
 
         <insert tableName="user_role" schemaName="entities">
@@ -134,6 +135,7 @@
             <column name="name" value="student"/>
             <column name="email" value="student@at-erp.com"/>
             <column name="password" value="$2a$08$B2T5/miKhn2wRrv6o1IiQOjhNTSi5Q2ky/G7MOZDX6wVyjjDKO4KC"/>
+            <column name="active" value="TRUE"/>
         </insert>
 
         <insert tableName="user_role" schemaName="entities">
