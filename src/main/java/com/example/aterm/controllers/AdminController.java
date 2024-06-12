@@ -1,9 +1,8 @@
 package com.example.aterm.controllers;
 
-import com.example.aterm.models.Lesson;
-import com.example.aterm.models.Prepod;
-import com.example.aterm.models.Student;
-import com.example.aterm.models.Subscription;
+import com.example.aterm.configurations.LessonsConfig;
+import com.example.aterm.configurations.SecurityConfig;
+import com.example.aterm.models.*;
 import com.example.aterm.repositories.LessonRepository;
 import com.example.aterm.repositories.StudentRepository;
 import com.example.aterm.repositories.SubscriptionReposiory;
@@ -18,10 +17,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 @Controller
 @RequiredArgsConstructor
@@ -36,6 +35,13 @@ public class AdminController {
     private final StudentRepository studentRepository;
     private final SubscriptionReposiory subscriptionReposiory;
     private final LessonRepository lessonRepository;
+
+    private final LessonsConfig lessonsConfig = new LessonsConfig();
+
+    DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+
+
     @GetMapping("/students")
     public String students(@RequestParam(name = "name", required = false) String name, Model model) {
         model.addAttribute("students", studentService.listStudents(name));
@@ -132,7 +138,9 @@ public class AdminController {
     }
 
     @PostMapping("/lesson/{id}/update/{subscriptionId}/{status}")
-    public String updateLesson(@PathVariable int id, @PathVariable long subscriptionId, @PathVariable String status) {
+    public String updateLesson(@PathVariable int id,
+                               @PathVariable long subscriptionId,
+                               @PathVariable String status) {
         lessonService.updateStatus(id, status);
         subscriptionService.reduceBalance((long) subscriptionId);
         subscriptionService.nowLessonUp((long) subscriptionId);
@@ -148,12 +156,58 @@ public class AdminController {
     }
 
     @GetMapping("/subscription/{id}")
-    public String subscription(@PathVariable Long id, Model model, @RequestParam(name = "subscriptionName", required = false) String name, @RequestParam(name = "name", required = false) String prepodName){
+    public String subscription(@PathVariable Long id, Model model,
+                               @RequestParam(name = "subscriptionName", required = false) String name,
+                               @RequestParam(name = "name", required = false) String prepodName)
+    {
         Subscription sub = subscriptionReposiory.getById(id);
+
+        ArrayList<LessonFrame> lessonFrames = new ArrayList<LessonFrame>();
+        String prepod = "Миша";
+
+        for (int day = 0; day <= 30; day++) {
+            LocalDate date = LocalDate.now().plusDays(day);
+            String formattedDate = date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+
+            for (int time = lessonsConfig.getStartTime(); time <= lessonsConfig.getFinishTime(); time++) {
+                LocalTime currentTime = LocalTime.of(time, 0);
+                String formattedTime = currentTime.format(DateTimeFormatter.ofPattern("HH:mm"));
+
+                boolean isAvailable = prepodService.isPrepodFree(prepod, formattedDate, formattedTime);
+
+                LessonFrame lessonFrame = new LessonFrame(formattedDate, formattedTime, prepod, isAvailable);
+                lessonFrames.add(lessonFrame);
+            }
+        }
+
         model.addAttribute("subscription", sub);
         model.addAttribute("student", sub.getStudent());
         model.addAttribute("prepods", prepodService.listPrepod(prepodName));
         model.addAttribute("lessons", lessonRepository.findLessonsBySubscriptionId(id));
+        model.addAttribute("lessonFrames", lessonFrames);
+
+        // Добавляем данные для календаря
+        StringBuilder eventsData = new StringBuilder();
+        for (LessonFrame lessonFrame : lessonFrames) {
+            String dateTimeString = lessonFrame.getDate() + "T" + lessonFrame.getPrepod();
+            String color = lessonFrame.isAviable() ? "green" : "red";
+
+            eventsData.append("{");
+            eventsData.append("\"title\": \"").append(lessonFrame.getPrepod()).append("\",");
+            eventsData.append("\"start\": \"").append(dateTimeString).append("\",");
+            eventsData.append("\"end\": \"").append(dateTimeString).append("\",");
+            eventsData.append("\"color\": \"").append(color).append("\"");
+            eventsData.append("},");
+        }
+
+        // Удаление последней запятой
+        if (eventsData.length() > 0) {
+            eventsData.deleteCharAt(eventsData.length() - 1);
+        }
+
+        model.addAttribute("eventsData", eventsData.toString());
+
         return "subscription";
     }
+
 }

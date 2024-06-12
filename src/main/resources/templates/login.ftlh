@@ -90,8 +90,8 @@
     <label for="password">Пароль:</label>
     <br>
     <input type="password" id="password" name="password" required>
+            <input type="hidden" name="_csrf" value="${_csrf.token}">
     <br><br>
-    <input type="hidden" name="_csrf" value="${_csrf.token}">
     <input type="submit" value="Вход">
 </form>
 <#--<p><a href="/registration">Зарегистрироваться</a></p>-->
