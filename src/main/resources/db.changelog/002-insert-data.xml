@@ -118,7 +118,7 @@
 
     <changeSet id="5" author="ib">
         <insert tableName="users" schemaName="entities">
-            <column name="id" value="1"/>
+            <column name="id" value="-1"/>
             <column name="name" value="at-admin"/>
             <column name="email" value="at-admin@at-erp.com"/>
             <column name="password" value="$2a$08$B2T5/miKhn2wRrv6o1IiQOjhNTSi5Q2ky/G7MOZDX6wVyjjDKO4KC"/>
@@ -126,12 +126,12 @@
         </insert>
 
         <insert tableName="user_role" schemaName="entities">
-            <column name="user_id" value="1"/>
+            <column name="user_id" value="-1"/>
             <column name="roles" value="ROLE_ADMIN"/>
         </insert>
 
         <insert tableName="users" schemaName="entities">
-            <column name="id" value="2"/>
+            <column name="id" value="-2"/>
             <column name="name" value="student"/>
             <column name="email" value="student@at-erp.com"/>
             <column name="password" value="$2a$08$B2T5/miKhn2wRrv6o1IiQOjhNTSi5Q2ky/G7MOZDX6wVyjjDKO4KC"/>
@@ -139,7 +139,7 @@
         </insert>
 
         <insert tableName="user_role" schemaName="entities">
-            <column name="user_id" value="2"/>
+            <column name="user_id" value="-2"/>
             <column name="roles" value="ROLE_CLIENT"/>
         </insert>
     </changeSet>

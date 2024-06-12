@@ -89,6 +89,7 @@
             </column>
             <column name="password" type="VARCHAR(1000)"/>
             <column name="active" type="boolean"/>
+            <column name="activation_code" type="VARCHAR(256)"/>
         </createTable>
     </changeSet>
 

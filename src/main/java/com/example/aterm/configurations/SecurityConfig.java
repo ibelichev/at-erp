@@ -21,7 +21,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers( "/registration")
+                .antMatchers("/api/registration", "/api/login", "/registration", "/login", "/activate/*")
                 .permitAll()
                 .anyRequest().authenticated()
                 .and()
@@ -44,4 +44,3 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder(8);
     }
 }
-

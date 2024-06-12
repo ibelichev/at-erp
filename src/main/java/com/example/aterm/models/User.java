@@ -31,9 +31,12 @@ public class User implements UserDetails {
     @Column(name = "active")
     private boolean active;
 
+    @Column(name = "activation_code")
+    private String activationCode;
+
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role", schema = "entities",
-    joinColumns = @JoinColumn(name = "user_id"))
+                            joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
     private Set<Role> roles = new HashSet<>();
 
