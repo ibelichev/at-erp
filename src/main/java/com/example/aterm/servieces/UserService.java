@@ -9,11 +9,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -26,6 +29,10 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final EmailService emailService;
 
+//    @Value("${server.address}" + ":" + "${server.port}")
+    @Value("${link}")
+    private String serverAddress;
+
     public boolean createUser (User user) {
         String email = user.getEmail();
         if (userRepository.findByEmail(email) != null) return false;
@@ -36,14 +43,14 @@ public class UserService {
         log.info("Saving new User with email: {}", email);
         userRepository.save(user);
         if (!StringUtils.isEmpty(user.getEmail())) {
-            String message = String.format(
-                    "Hello, %s! \n" +
-                            "Welcome to AT-ERP. Please, visit next link to confirm your email: http://localhost:9090/activate/%s",
-                    user.getName(),
-                    user.getActivationCode()
-            );
+            Map<String, Object> model = new HashMap<>();
+            model.put("userName", user.getName());
+//            String activationLink = serverAddress + "/activate/" + user.getActivationCode();
+            String activationLink = user.getActivationCode();
+            System.out.println("хуй пизда: " + activationLink);
+            model.put("activationLink", activationLink);
 
-            emailService.sendSimpleMessage(user.getEmail(), "Activation code", message);
+            emailService.sendHtmlMessage(user.getEmail(), "Activation code", "activation-email.ftlh", model);
             return true;
         }
         return true;
