@@ -16,6 +16,11 @@
 	<properties>
 		<java.version>17</java.version>
 	</properties>
+
+	<repositories>
+
+	</repositories>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -76,6 +81,25 @@
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 		</dependency>
+
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml</artifactId>
+			<version>5.2.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+			<version>5.2.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.docx4j</groupId>
+			<artifactId>docx4j-JAXB-ReferenceImpl</artifactId>
+			<version>11.3.2</version>
+		</dependency>
+
 
 	</dependencies>
 
