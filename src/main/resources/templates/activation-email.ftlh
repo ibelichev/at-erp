@@ -33,7 +33,7 @@
     <div class="container">
         <h2>Hello, ${userName}!</h2>
         <p>Welcome to AT-ERP. Please, visit the following link to confirm your email:</p>
-        <a href="http://172.20.10.4:9090/activate/${activationLink}" class="button">Activate your account</a>
+        <a href="http://localhost:9090/activate/${activationLink}" class="button">Activate your account</a>
         <p style="margin-top: 20px;">If you didn't create an account, please ignore this email.</p>
     </div>
 </body>
