@@ -18,6 +18,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -28,12 +29,25 @@ public class AgreementSerivce {
     private final AgreementRepository agreementRepository;
     private final StudentRepository studentRepository;
 
-    public ResponseEntity<byte[]> makeAgreement(Subscription subscription, LocalDate date) throws IOException {
-        Agreement agreement = new Agreement(date, subscription, true);
-        agreementRepository.save(agreement);
 
-        // чтобы получить сгенерированный id получаем agreement еще раз
-        agreement = agreementRepository.findBySubscriptionId(subscription.getId());
+    public ResponseEntity<byte[]> downloadAgreement(Subscription subscription) throws IOException {
+
+        LocalDate date;
+        Agreement agreement = agreementRepository.findBySubscriptionId(subscription.getId());
+
+
+        if (agreement != null) {
+            // договор существует
+            date = agreement.getDate();
+        } else {
+            // договор не существует
+            date = LocalDate.now();
+            agreement = new Agreement(date, subscription, true);
+            agreementRepository.save(agreement);
+            agreement = agreementRepository.findBySubscriptionId(subscription.getId());
+        }
+
+
         Student student = studentRepository.getById(subscription.getStudent().getId());
 
         InputStream templateInputStream = new FileInputStream("src/main/resources/templates/template.docx");
@@ -42,14 +56,20 @@ public class AgreementSerivce {
         replacePlaceholder(document, "{{dogovor_number}}", Long.toString(agreement.getId()));
         replacePlaceholder(document, "{{dogovor_date}}", date.toString());
         replacePlaceholder(document, "{{client_fio}}", student.getName());
+        replacePlaceholder(document, "{{passport_seria}}", student.getPassportSeries());
+        replacePlaceholder(document, "{{passport_number}}", student.getPassportNumber());
+        replacePlaceholder(document, "{{birthday}}", student.getBirthday());
 
         // Запись дока в массив байтов
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         document.write(outputStream);
         document.close();
 
+        String filename = String.format("Договор %s.docx", student.getName()).replace(" ", "_");
+        String encodedFilename = java.net.URLEncoder.encode(filename, StandardCharsets.UTF_8);
+
         return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=agreement.docx")
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename*=UTF-8''" + encodedFilename)
                 .contentType(MediaType.APPLICATION_OCTET_STREAM)
                 .body(outputStream.toByteArray());
     }
