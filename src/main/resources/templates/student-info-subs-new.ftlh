@@ -20,6 +20,7 @@
         nav a:hover {
             text-decoration: underline;
         }
+
         body {
             background-color: white;
             color: black;
@@ -112,6 +113,57 @@
         p {
             text-align: center;
         }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+            padding-top: 60px;
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+            border-radius: 4px;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .btn {
+            background-color: red;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: darkred;
+        }
     </style>
 </head>
 <body>
@@ -131,7 +183,17 @@
         <div><b>ФИО: </b>${student.name}</div>
         <div><b>Телефон: </b>${student.phone}</div>
         <div><b>Дата рождения: </b>${student.birthday}</div>
+        <#if student.passportSeries??>
+            <div><b>Серия паспорта: </b>${student.passportSeries}</div>
+        </#if>
+        <#if student.passportNumber??>
+            <div><b>Номер паспорта: </b>${student.passportNumber}</div>
+        </#if>
     </div>
+
+    <#if !student.passportSeries?? && !student.passportNumber??>
+        <button id="addPassportBtn" class="btn">Добавить серию и номер паспорта</button>
+    </#if>
 
     <div class="subscriptions">
         <#list subscriptions as subscription>
@@ -143,7 +205,6 @@
 
     <div class="student-info">
         <form action="/subscriptions/add" method="post">
-
             <input type="text" name="subscriptionName" placeholder="Название подписки">
             <input type="text" name="studentName" placeholder="ФИО ученика" value="${student.name}">
             <input type="text" name="amountOfLessons" placeholder="План уроков">
@@ -161,5 +222,49 @@
     </div>
 
 </div>
+
+<!-- The Modal -->
+<div id="passportModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <form action="/student/add_passport" method="post">
+            <input type="text" name="passportSeries" placeholder="Серия паспорта" required>
+            <input type="text" name="passportNumber" placeholder="Номер паспорта" required>
+            <input type="hidden" name="studentId" value="${student.id}">
+            <input type="hidden" name="_csrf" value="${_csrf.token}">
+            <input type="submit" value="Добавить">
+        </form>
+    </div>
+</div>
+
+<script>
+    // Get the modal
+    var modal = document.getElementById("passportModal");
+
+    // Get the button that opens the modal
+    var btn = document.getElementById("addPassportBtn");
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+
+    // When the user clicks the button, open the modal
+    if(btn){
+        btn.onclick = function() {
+            modal.style.display = "block";
+        }
+    }
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+</script>
 </body>
 </html>

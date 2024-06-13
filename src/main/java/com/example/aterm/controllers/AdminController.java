@@ -48,6 +48,21 @@ public class AdminController {
         return "students";
     }
 
+    @PostMapping("/student/add_passport")
+    public String addPassport(@RequestParam("studentId") Long studentId,
+                              @RequestParam("passportSeries") String passportSeries,
+                              @RequestParam("passportNumber") String passportNumber) {
+
+        Student student = studentRepository.findById(studentId).orElse(null);
+        student.setPassportSeries(passportSeries);
+        student.setPassportNumber(passportNumber);
+
+        studentRepository.save(student);
+
+        return String.format("redirect:/student/%s", studentId);
+    }
+
+
     @GetMapping("/student/{id}")
     public String studentInfo(@PathVariable Long id, Model model, @RequestParam(name = "subscriptionName", required = false) String name, @RequestParam(name = "name", required = false) String prepodName) {
         Student student = studentRepository.getById(id);
@@ -215,12 +230,11 @@ public class AdminController {
         return "subscription";
     }
 
-    @GetMapping("/subscription/generate")
+    @PostMapping("/subscription/download")
     public ResponseEntity<byte[]> generateAgreement(@RequestParam(name = "subscriptionid", required = true) Long subscriptionId) throws Exception {
-        LocalDate date = LocalDate.now();
         Subscription subscription = subscriptionReposiory.getById(subscriptionId);
 
-        return agreementSerivce.makeAgreement(subscription, date);
+        return agreementSerivce.downloadAgreement(subscription);
     }
 
 }

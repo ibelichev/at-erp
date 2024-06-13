@@ -142,6 +142,27 @@
     </form>
 </div>
 
+    <!-- Agreement Section -->
+        <div class="agreement-section">
+            <h3>Договор</h3>
+            <#if agreement??>
+                <div><b>Дата договора: </b>${agreement.date}</div>
+                <div><b>Статус: </b><#if agreement.active>Активный<#else>Неактивный</#if></div>
+                <form action="/subscription/download?subscriptionid=${subscription.id}" method="post">
+                    <input type="hidden" name="_csrf" value="${_csrf.token}">
+                    <input type="submit" value="Скачать договор" class="btn">
+                </form>
+            <#else>
+                <form action="/subscription/download?subscriptionid=${subscription.id}" method="post">
+                    <input type="hidden" name="subscriptionId" value="${subscription.id}">
+                    <input type="hidden" name="_csrf" value="${_csrf.token}">
+                    <input type="submit" value="Сформировать договор" class="btn">
+                </form>
+            </#if>
+        </div>
+
+
+
 <h3>Запланировать урок</h3>
 
 <form action="/lesson/create" method="post">

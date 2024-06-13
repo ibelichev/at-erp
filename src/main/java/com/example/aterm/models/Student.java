@@ -27,6 +27,10 @@ public class Student {
     @Column(name = "birthday")
     private String birthday;
 
+    private String passportSeries;
+
+    private String passportNumber;
+
     @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
     private List<Subscription> subscriptions = new ArrayList<>();
 }

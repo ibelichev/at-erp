@@ -1,9 +1,7 @@
 package com.example.aterm.servieces;
 
-import com.example.aterm.models.EmailConfirmation;
 import com.example.aterm.models.User;
 import com.example.aterm.models.enums.Role;
-import com.example.aterm.repositories.EmailConfirmationRepository;
 import com.example.aterm.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -47,7 +45,6 @@ public class UserService {
             model.put("userName", user.getName());
 //            String activationLink = serverAddress + "/activate/" + user.getActivationCode();
             String activationLink = user.getActivationCode();
-            System.out.println("хуй пизда: " + activationLink);
             model.put("activationLink", activationLink);
 
             emailService.sendHtmlMessage(user.getEmail(), "Activation code", "activation-email.ftlh", model);

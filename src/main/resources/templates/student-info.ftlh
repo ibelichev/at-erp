@@ -98,6 +98,8 @@
         <div><b>ФИО: </b>${student.name}</div>
         <div><b>Телефон: </b>${student.phone}</div>
         <div><b>Дата рождения: </b>${student.birthday}</div>
+        <div><b>Серия паспорта </b>${student.passportSeries}</div>
+        <div><b>Номер паспорта </b>${student.passportNumber}</div>
     </div>
 
     <div class="student-info">
